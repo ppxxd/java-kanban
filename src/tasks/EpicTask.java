@@ -19,6 +19,10 @@ public class EpicTask extends Task {
         return subTaskArrayList;
     }
 
+    public void clearSubTaskArrayList() {
+        subTaskArrayList.clear();
+    }
+
     public void removeSubTaskFromArray(SubTask subTask) {
         subTaskArrayList.remove(subTask);
         checkEpicStatus(); //После удаления проверяем, не надо ли обновить статус Эпика

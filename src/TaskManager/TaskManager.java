@@ -46,6 +46,10 @@ public class TaskManager {
 
     public void clearSubTasksArrayList() {
         this.subTasksList.clear();
+        //Поскольку сабТаски привязаны к Эпикам, то нужно почистить еще их у Эпиков
+        for (Integer id : epicTasksList.keySet()) {
+            epicTasksList.get(id).clearSubTaskArrayList();
+        }
     }
 
     //Получение по идентификатору.
