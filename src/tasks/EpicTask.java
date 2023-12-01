@@ -1,70 +1,35 @@
 package tasks;
 
-import TaskManager.TaskManager.TaskStatus;
-
 import java.util.ArrayList;
 
 public class EpicTask extends Task {
-    private ArrayList<SubTask> subTaskArrayList;
-
-    private TaskStatus taskStatus;
+    private ArrayList<Integer> subTasksIDs;
 
     public EpicTask(String name, String description) {
         super(name, description);
-        subTaskArrayList = new ArrayList<>();
+        subTasksIDs = new ArrayList<>();
         this.taskStatus = TaskStatus.NEW;
     }
 
-    public ArrayList<SubTask> getSubTaskArrayList() {
-        return subTaskArrayList;
+    public ArrayList<Integer> getSubTaskArrayList() {
+        return subTasksIDs;
     }
 
     public void clearSubTaskArrayList() {
-        subTaskArrayList.clear();
+        subTasksIDs.clear();
+    }
+
+    public void addSubTaskToArrayList(Integer id) {
+        this.subTasksIDs.add(id);
     }
 
     public void removeSubTaskFromArray(SubTask subTask) {
-        subTaskArrayList.remove(subTask);
-        checkEpicStatus(); //После удаления проверяем, не надо ли обновить статус Эпика
+        subTasksIDs.remove(subTask.getId());
     }
 
     public SubTask createSubTask(String name, String description) {
-        SubTask newSubTask = new SubTask(name, description, this);
-        subTaskArrayList.add(newSubTask);
-        return newSubTask;
+        //Добавляем айди сабТаски после определения ей её айди в Менеджере (метод createSubTask)
+        return new SubTask(name, description, this.id);
     }
 
-    @Override
-    public TaskStatus getTaskStatus() {
-        return taskStatus;
-    }
-
-    @Override
-    public void setTaskStatus(TaskStatus taskStatus) {
-        this.taskStatus = taskStatus;
-    }
-
-    public void checkEpicStatus() {
-        int countNew = 0;
-        int countDone = 0;
-        // Нет необходимости считать кол-во в прогрессе, так как если countNew == кол-во задач, то ВСЕ задачи новые,
-        // аналогично с countDone все задачи будут ВЫПОЛНЕНЫМИ.
-
-        for (SubTask subTask : subTaskArrayList) {
-            if (subTask.getTaskStatus() == TaskStatus.NEW) {
-               countNew++;
-            } else if (subTask.getTaskStatus() == TaskStatus.DONE) {
-                countDone++;
-            }
-        }
-
-        if (countNew == subTaskArrayList.size()) {
-            setTaskStatus(TaskStatus.NEW);
-        } else if (countDone == subTaskArrayList.size()) {
-            setTaskStatus(TaskStatus.DONE);
-        } else {
-            setTaskStatus(TaskStatus.IN_PROGRESS);
-        }
-
-    }
 }

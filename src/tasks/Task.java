@@ -1,20 +1,30 @@
 package tasks;
 
-import TaskManager.TaskManager.TaskStatus;
-
 public class Task {
     protected String name;
     protected String description;
+    protected Integer id; // NULL by default
+    protected TaskStatus taskStatus;
 
-    protected static Integer id = 0;
-
-    private TaskStatus taskStatus;
+    public enum TaskStatus {
+        NEW,
+        IN_PROGRESS,
+        DONE
+    }
 
     public Task(String name, String description) {
         this.name = name;
         this.description = description;
-        id++;
+        this.id = null;
         this.taskStatus = TaskStatus.NEW;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
     }
 
     public String getName() {
@@ -23,6 +33,10 @@ public class Task {
 
     public String getDescription() {
         return description;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
     }
 
     public Integer getId() {
@@ -36,6 +50,5 @@ public class Task {
     public TaskStatus getTaskStatus() {
         return taskStatus;
     }
-
 
 }
