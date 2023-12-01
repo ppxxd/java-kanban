@@ -10,7 +10,7 @@ public class TaskManager {
     private HashMap<Integer, EpicTask> epics;
     private HashMap<Integer, SubTask> subtasks;
 
-    private Integer id = 0;
+    private static Integer id = 0;
 
     public TaskManager() {
         tasks = new HashMap<>();
@@ -19,8 +19,8 @@ public class TaskManager {
     }
 
     private Integer getId() {
-        this.id++;
-        return this.id;
+        id++;
+        return id;
     }
 
     //Получение списка всех задач.
