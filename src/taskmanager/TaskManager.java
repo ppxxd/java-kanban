@@ -18,7 +18,7 @@ public class TaskManager {
         subtasks = new HashMap<>();
     }
 
-    private Integer getId() {
+    private Integer generateId() {
         id++;
         return id;
     }
@@ -69,19 +69,19 @@ public class TaskManager {
 
     //Создание. Сам объект должен передаваться в качестве параметра.
     public Task createTask(Task task) {
-        task.setId(getId());
+        task.setId(generateId());
         tasks.put(task.getId(), task);
         return task;
     }
 
     public EpicTask createEpicTask(EpicTask epicTask) {
-        epicTask.setId(getId());
+        epicTask.setId(generateId());
         epics.put(epicTask.getId(), epicTask);
         return epicTask;
     }
 
     public SubTask createSubTask(SubTask subTask) {
-        subTask.setId(getId());
+        subTask.setId(generateId());
         subtasks.put(subTask.getId(), subTask);
         EpicTask epicTask = epics.get(subTask.getEpicTaskID()); //Узнаем к какому эпику она привязана
         epicTask.addSubTaskToArrayList(subTask.getId()); //Добавляем к этому эпику ее айди в список
