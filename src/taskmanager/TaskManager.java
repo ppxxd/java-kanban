@@ -89,14 +89,16 @@ public class TaskManager {
     }
 
     //Обновление. Новая версия объекта с верным идентификатором передаётся в виде параметра.
-    public void updateTask(Task task) { //TODO?
-        if (tasks.containsValue(task)) { //Проверяем, что таска существует
+    //Из условия понял, что таска подается со старым айди, но по сути это новый объект
+    //Поэтому проверяю есть ли в списке таска с таким айди и перезаписываю туда новый объект
+    public void updateTask(Task task) {
+        if (tasks.containsKey(task.getId())) { //Проверяем, что таска c таким айди существует
             tasks.put(task.getId(), task);
         }
     }
 
-    public void updateEpicTask(EpicTask epicTask) { //TODO?
-        if (epics.containsValue(epicTask)) {
+    public void updateEpicTask(EpicTask epicTask) {
+        if (epics.containsKey(epicTask.getId())) {
             EpicTask oldEpicTask = epics.get(epicTask.getId());
 
             oldEpicTask.setName(epicTask.getName());
@@ -106,8 +108,8 @@ public class TaskManager {
         }
     }
 
-    public void updateSubTask(SubTask subTask) { // TODO?
-        if (subtasks.containsValue(subTask)) {
+    public void updateSubTask(SubTask subTask) {
+        if (subtasks.containsKey(subTask.getId())) {
             subtasks.put(subTask.getId(), subTask);
         }
     }
@@ -162,7 +164,7 @@ public class TaskManager {
         }
     }
 
-    public void updateSubTaskStatus(TaskStatus taskStatus, Integer id) {//TODO TEST
+    public void updateSubTaskStatus(TaskStatus taskStatus, Integer id) {
         if (subtasks.containsKey(id)) {
             SubTask subTask = subtasks.get(id);
             subTask.setTaskStatus(taskStatus);
