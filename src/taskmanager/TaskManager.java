@@ -37,16 +37,16 @@ public class TaskManager {
     }
 
     //Удаление всех задач.
-    public void clearTasksArrayList() {
+    public void clearTasks() {
         this.tasks.clear();
     }
 
-    public void clearEpicTasksArrayList() {
+    public void clearEpicTasks() {
         this.epics.clear();
         this.subtasks.clear();
     }
 
-    public void clearSubTasksArrayList() {
+    public void clearSubTasks() {
         this.subtasks.clear();
         //Поскольку сабТаски привязаны к Эпикам, то нужно почистить еще их у Эпиков
         for (Integer id : epics.keySet()) {
@@ -83,8 +83,12 @@ public class TaskManager {
     public SubTask createSubTask(SubTask subTask) {
         subTask.setId(generateId());
         subtasks.put(subTask.getId(), subTask);
-        EpicTask epicTask = epics.get(subTask.getEpicTaskID()); //Узнаем к какому эпику она привязана
-        epicTask.addSubTaskToArrayList(subTask.getId()); //Добавляем к этому эпику ее айди в список
+        if (epics.get(subTask.getEpicTaskID()) != null) {
+            EpicTask epicTask = epics.get(subTask.getEpicTaskID()); //Узнаем к какому эпику она привязана
+            epicTask.addSubTaskToArrayList(subTask.getId()); //Добавляем к этому эпику ее айди в список
+        } else {
+            System.out.println("No SubTask's epic found with this ID.");
+        }
         return subTask;
     }
 
@@ -111,6 +115,8 @@ public class TaskManager {
     public void updateSubTask(SubTask subTask) {
         if (subtasks.containsKey(subTask.getId())) {
             subtasks.put(subTask.getId(), subTask);
+            updateEpicTaskStatus(epics.get(subTask.getEpicTaskID())); /* Проверять, есть ли эпик не нужно, так как по
+            условию информация передается с верным идентификатором, то есть ошибок не должно быть */
         }
     }
 
@@ -153,29 +159,6 @@ public class TaskManager {
     }
 
     //Обновление статуса задачи
-    public void updateTaskStatus(TaskStatus taskStatus, Integer id) {
-        if (tasks.containsKey(id)) {
-            Task task = tasks.get(id);
-            task.setTaskStatus(taskStatus);
-            updateTask(task); // Предпологаю, что это не нужно, так как ключ для Мапы создан вручную,
-                              // то есть коллизий не долно быть
-        } else {
-            System.out.println("No task found with this ID");
-        }
-    }
-
-    public void updateSubTaskStatus(TaskStatus taskStatus, Integer id) {
-        if (subtasks.containsKey(id)) {
-            SubTask subTask = subtasks.get(id);
-            subTask.setTaskStatus(taskStatus);
-            updateEpicTaskStatus(epics.get(subTask.getEpicTaskID()));
-            updateSubTask(subTask); // Предпологаю, что это не нужно, так как ключ для Мапы создан вручную,
-                                    // то есть коллизий не долно быть
-        } else {
-            System.out.println("No SubTask found with this ID");
-        }
-    }
-
     private void updateEpicTaskStatus(EpicTask epicTask) { //private потому что не может менять свой статус сам
         int countNew = 0;
         int countDone = 0;

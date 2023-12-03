@@ -1,15 +1,46 @@
-//import taskmanager.TaskManager;
-//import tasks.*;
+import taskmanager.TaskManager;
+import tasks.*;
 
 public class Main {
 
     public static void main(String[] args) {
-//        TaskManager taskManager = new TaskManager();
-//        Task task = new Task("test1", "test1 description");
-//        taskManager.createTask(task);
+        TaskManager taskManager = new TaskManager();
+        Task task = new Task("test1", "test1 description");
+        taskManager.createTask(task);
 ////
-//        Task task2 = new Task("test1", "test1 description");
+//        Task task2 = new Task("test2", "test2 description");
 //        task2.setId(1);
+//        task2.setTaskStatus(Task.TaskStatus.DONE);
+//
+//        System.out.println(task.getTaskStatus());
+//        System.out.println(task2.getTaskStatus());
+//
+//        taskManager.updateTask(task2);
+//
+//        System.out.println(taskManager.getTaskById(1).getTaskStatus());
+
+        EpicTask epicTask1 = new EpicTask("test2", "test2 description");
+        taskManager.createEpicTask(epicTask1);
+
+        SubTask sub1test = epicTask1.createSubTask("sub1", "sub1 desc");
+        taskManager.createSubTask(sub1test);
+
+        SubTask sub2test = epicTask1.createSubTask("sub2", "sub2 desc");
+        taskManager.createSubTask(sub2test);
+
+        SubTask sub3test = new SubTask("sub3", "sub3 desc", epicTask1.getId());
+        sub3test.setId(sub1test.getId());
+        sub3test.setTaskStatus(Task.TaskStatus.DONE);
+
+        sub2test.setTaskStatus(Task.TaskStatus.IN_PROGRESS);
+
+        taskManager.updateSubTask(sub3test);
+
+        System.out.println(taskManager.getEpicTaskById(epicTask1.getId()).getTaskStatus());
+
+
+
+
 ////        taskManager.createTask(task2);
 ////
 //        EpicTask epicTask1 = new EpicTask("test2", "test2 description");
@@ -36,9 +67,9 @@ public class Main {
 
 //
 //
-////        taskManager.clearTasksArrayList();
-//////        taskManager.clearEpicTasksArrayList();
-////        taskManager.clearSubTasksArrayList();
+////        taskManager.clearTasks();
+//////        taskManager.clearEpicTasks();
+////        taskManager.clearSubTasks();
 ////
 ////        System.out.println(taskManager.getTasksList());
 ////        System.out.println(taskManager.getEpicTasksList());
@@ -56,23 +87,5 @@ public class Main {
 ////        System.out.println(taskManager.getSubTasksList());
 ////        System.out.println(taskManager.getEpicsSubTaskList(taskManager.getEpicTaskById(2)));
 //
-//        System.out.println(task.getTaskStatus().toString());
-//        System.out.println(epicTask1.getTaskStatus().toString());
-//        System.out.println(sub1test.getTaskStatus().toString());
-//        System.out.println(sub2test.getTaskStatus().toString());
-//
-//        taskManager.updateTaskStatus(Task.TaskStatus.IN_PROGRESS, task.getId());
-//        taskManager.updateSubTaskStatus(Task.TaskStatus.DONE, sub1test.getId());
-//        taskManager.updateSubTaskStatus(Task.TaskStatus.IN_PROGRESS, sub2test.getId());
-//
-//        System.out.println(task.getTaskStatus().toString());
-//        System.out.println(epicTask1.getTaskStatus().toString());
-//        System.out.println(sub1test.getTaskStatus().toString());
-//        System.out.println(sub2test.getTaskStatus().toString());
-//
-//        taskManager.deleteSubTaskById(sub2test.getId());
-//
-//        System.out.println(epicTask1.getTaskStatus().toString());
-
     }
 }
