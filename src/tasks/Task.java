@@ -6,12 +6,6 @@ public class Task {
     protected Integer id; // NULL by default
     protected TaskStatus taskStatus;
 
-    public enum TaskStatus {
-        NEW,
-        IN_PROGRESS,
-        DONE
-    }
-
     public Task(String name, String description) {
         this.name = name;
         this.description = description;

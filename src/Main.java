@@ -30,9 +30,9 @@ public class Main {
 
         SubTask sub3test = new SubTask("sub3", "sub3 desc", epicTask1.getId());
         sub3test.setId(sub1test.getId());
-        sub3test.setTaskStatus(Task.TaskStatus.DONE);
+        sub3test.setTaskStatus(TaskStatus.DONE);
 
-        sub2test.setTaskStatus(Task.TaskStatus.IN_PROGRESS);
+        sub2test.setTaskStatus(TaskStatus.IN_PROGRESS);
 
         taskManager.updateSubTask(sub3test);
 

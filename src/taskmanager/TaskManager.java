@@ -3,7 +3,7 @@ package taskmanager;
 import tasks.*;
 import java.util.ArrayList;
 import java.util.HashMap;
-import tasks.Task.TaskStatus;
+import tasks.TaskStatus;
 
 public class TaskManager {
     private HashMap<Integer, Task> tasks;
