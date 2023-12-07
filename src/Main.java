@@ -1,91 +1,56 @@
-import taskmanager.TaskManager;
+import taskmanager.*;
 import tasks.*;
 
 public class Main {
 
     public static void main(String[] args) {
-        TaskManager taskManager = new TaskManager();
-        Task task = new Task("test1", "test1 description");
-        taskManager.createTask(task);
-////
-//        Task task2 = new Task("test2", "test2 description");
-//        task2.setId(1);
-//        task2.setTaskStatus(Task.TaskStatus.DONE);
-//
-//        System.out.println(task.getTaskStatus());
-//        System.out.println(task2.getTaskStatus());
-//
-//        taskManager.updateTask(task2);
-//
-//        System.out.println(taskManager.getTaskById(1).getTaskStatus());
+        TaskManager inMemoryTaskManager = Managers.getDefault();
 
-        EpicTask epicTask1 = new EpicTask("test2", "test2 description");
-        taskManager.createEpicTask(epicTask1);
+        inMemoryTaskManager.createTask(new Task("test1", "test1 description"));
+        inMemoryTaskManager.createTask(new Task("test2", "test2 description"));
+        inMemoryTaskManager.createTask(new Task("test3", "test3 description"));
+        inMemoryTaskManager.createTask(new Task("test4", "test4 description"));
+        inMemoryTaskManager.createTask(new Task("test5", "test5 description"));
+        inMemoryTaskManager.createTask(new Task("test6", "test6 description"));
+        inMemoryTaskManager.createTask(new Task("test7", "test7 description"));
+        inMemoryTaskManager.createTask(new Task("test8", "test8 description"));
+        inMemoryTaskManager.createTask(new Task("test9", "test9 description"));
+        inMemoryTaskManager.createTask(new Task("test10", "test10 description"));
 
-        SubTask sub1test = epicTask1.createSubTask("sub1", "sub1 desc");
-        taskManager.createSubTask(sub1test);
+        inMemoryTaskManager.createEpicTask(new EpicTask("test11", "test11 description"));
+        inMemoryTaskManager.createEpicTask(new EpicTask("test12", "test12 description"));
 
-        SubTask sub2test = epicTask1.createSubTask("sub2", "sub2 desc");
-        taskManager.createSubTask(sub2test);
+        inMemoryTaskManager.createSubTask(new SubTask("test13", "test13", 11));
+        inMemoryTaskManager.createSubTask(new SubTask("test14", "test14", 11));
+        inMemoryTaskManager.createSubTask(new SubTask("test15", "test15", 12));
 
-        SubTask sub3test = new SubTask("sub3", "sub3 desc", epicTask1.getId());
-        sub3test.setId(sub1test.getId());
-        sub3test.setTaskStatus(TaskStatus.DONE);
+        System.out.println(inMemoryTaskManager.getHistory());
 
-        sub2test.setTaskStatus(TaskStatus.IN_PROGRESS);
+        inMemoryTaskManager.getTaskById(1);
+        inMemoryTaskManager.getTaskById(2);
 
-        taskManager.updateSubTask(sub3test);
+        System.out.println(inMemoryTaskManager.getHistory());
+        System.out.println(inMemoryTaskManager.getHistory().size());
 
-        System.out.println(taskManager.getEpicTaskById(epicTask1.getId()).getTaskStatus());
+        for (int i = 3; i < 11; i++) {
+            inMemoryTaskManager.getTaskById(i);
+        }
 
+        System.out.println(inMemoryTaskManager.getHistory());
+        System.out.println(inMemoryTaskManager.getHistory().size());
 
+        inMemoryTaskManager.getEpicTaskById(11);
 
+        System.out.println(inMemoryTaskManager.getHistory());
+        System.out.println(inMemoryTaskManager.getHistory().size());
 
-////        taskManager.createTask(task2);
-////
-//        EpicTask epicTask1 = new EpicTask("test2", "test2 description");
-//        taskManager.createEpicTask(epicTask1);
-//
-//        EpicTask epicTask2 = new EpicTask("test3", "test3 description");
-//        epicTask2.setId(2);
-//
-//        SubTask sub1test = epicTask1.createSubTask("sub1", "sub1 desc");
-//        taskManager.createSubTask(sub1test);
-//        SubTask sub2test = epicTask1.createSubTask("sub2", "sub2 desc");
-////        taskManager.createSubTask(sub2test);
-//        sub2test.setId(3);
-//        System.out.println(taskManager.getSubTasksList());
-//        System.out.println(taskManager.getSubTaskById(3));
-//        taskManager.updateSubTask(sub2test);
-//        System.out.println(taskManager.getSubTasksList());
-//        System.out.println(taskManager.getSubTaskById(3));
-//        System.out.println(taskManager.getEpicTaskById(2).getName());
+        inMemoryTaskManager.getSubTaskById(13);
+        inMemoryTaskManager.getSubTaskById(15);
+        inMemoryTaskManager.getTaskById(6);
+        inMemoryTaskManager.getTaskById(5);
 
+        System.out.println(inMemoryTaskManager.getHistory());
+        System.out.println(inMemoryTaskManager.getHistory().size());
 
-//        System.out.println(taskManager.getSubTasksList());
-//        System.out.println(taskManager.getEpicTasksList());
-
-//
-//
-////        taskManager.clearTasks();
-//////        taskManager.clearEpicTasks();
-////        taskManager.clearSubTasks();
-////
-////        System.out.println(taskManager.getTasksList());
-////        System.out.println(taskManager.getEpicTasksList());
-////        System.out.println(taskManager.getSubTasksList());
-////        System.out.println(taskManager.getEpicsSubTaskList(taskManager.getEpicTaskById(2)));
-//
-////        System.out.println(taskManager.getEpicsSubTaskList(taskManager.getEpicTaskById(2)));
-////
-//////        taskManager.deleteTaskById(1); //works
-////        taskManager.deleteEpicTaskById(2);
-//////        taskManager.deleteSubTaskById(3);
-////
-////        System.out.println(taskManager.getTasksList());
-////        System.out.println(taskManager.getEpicTasksList());
-////        System.out.println(taskManager.getSubTasksList());
-////        System.out.println(taskManager.getEpicsSubTaskList(taskManager.getEpicTaskById(2)));
-//
     }
 }
