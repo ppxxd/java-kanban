@@ -10,11 +10,11 @@ import java.util.List;
 public interface TaskManager {
 
     //Получение списка всех задач.
-    ArrayList<Task> getTasksList();
+    List<Task> getTasksList();
 
-    ArrayList<EpicTask> getEpicTasksList();
+    List<EpicTask> getEpicTasksList();
 
-    ArrayList<SubTask>getSubTasksList();
+    List<SubTask>getSubTasksList();
 
     //Удаление всех задач.
     void clearTasks();

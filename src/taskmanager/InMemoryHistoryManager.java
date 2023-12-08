@@ -7,20 +7,20 @@ import tasks.Task;
 public class InMemoryHistoryManager implements HistoryManager {
 
     private final static int SIZE_LIST = 10;
-    private List<Task> historyList = new ArrayList<>();
+    private final List<Task> historyList = new ArrayList<>();
 
     @Override
     public void add(Task task) {
         if (task != null) {
-            this.historyList.add(task);
-        }
-        if (this.historyList.size() > SIZE_LIST) {
-            this.historyList.remove(0);
+            historyList.add(task);
+            if (historyList.size() > SIZE_LIST) {
+                historyList.remove(0);
+            }
         }
     }
 
     @Override
     public List<Task> getHistory() {
-        return this.historyList;
+        return new ArrayList<>(historyList);
     }
 }

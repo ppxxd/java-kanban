@@ -8,10 +8,10 @@ import java.util.List;
 import tasks.TaskStatus;
 
 public class InMemoryTaskManager implements TaskManager {
-    private HashMap<Integer, Task> tasks;
-    private HashMap<Integer, EpicTask> epics;
-    private HashMap<Integer, SubTask> subtasks;
-    private HistoryManager historyManager = Managers.getDefaultHistory();
+    private final HashMap<Integer, Task> tasks;
+    private final HashMap<Integer, EpicTask> epics;
+    private final HashMap<Integer, SubTask> subtasks;
+    private final HistoryManager historyManager = Managers.getDefaultHistory();
 
     private static Integer id = 0;
 
@@ -45,18 +45,18 @@ public class InMemoryTaskManager implements TaskManager {
     //Удаление всех задач.
     @Override
     public void clearTasks() {
-        this.tasks.clear();
+        tasks.clear();
     }
 
     @Override
     public void clearEpicTasks() {
-        this.epics.clear();
-        this.subtasks.clear();
+        epics.clear();
+        subtasks.clear();
     }
 
     @Override
     public void clearSubTasks() {
-        this.subtasks.clear();
+        subtasks.clear();
         //Поскольку сабТаски привязаны к Эпикам, то нужно почистить еще их у Эпиков
         for (Integer id : epics.keySet()) {
             epics.get(id).clearSubTaskArrayList();
@@ -66,20 +66,23 @@ public class InMemoryTaskManager implements TaskManager {
     //Получение по идентификатору.
     @Override
     public Task getTaskById(Integer id) {
-        historyManager.add(tasks.get(id));
-        return tasks.get(id);
+        Task task = tasks.get(id);
+        historyManager.add(task);
+        return task;
     }
 
     @Override
     public EpicTask getEpicTaskById(Integer id) {
-        historyManager.add(epics.get(id));
-        return epics.get(id);
+        EpicTask epicTask = epics.get(id);
+        historyManager.add(epicTask);
+        return epicTask;
     }
 
     @Override
     public SubTask getSubTaskById(Integer id) {
-        historyManager.add(subtasks.get(id));
-        return subtasks.get(id);
+        SubTask subTask = subtasks.get(id);
+        historyManager.add(subTask);
+        return subTask;
     }
 
     //Создание. Сам объект должен передаваться в качестве параметра.
