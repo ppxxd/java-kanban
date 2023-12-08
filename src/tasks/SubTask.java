@@ -1,5 +1,7 @@
 package tasks;
 
+import java.util.Objects;
+
 public class SubTask extends Task {
     private final Integer epicTaskID;
 
@@ -14,17 +16,27 @@ public class SubTask extends Task {
     }
 
     @Override
-    public int hashCode() {
-        return super.hashCode();
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        if (!super.equals(o)) return false;
+        SubTask subTask = (SubTask) o;
+        return Objects.equals(epicTaskID, subTask.epicTaskID);
     }
 
     @Override
-    public boolean equals(Object obj) {
-        return super.equals(obj);
+    public int hashCode() {
+        return Objects.hash(super.hashCode(), epicTaskID);
     }
 
     @Override
     public String toString() {
-        return super.toString();
+        return "SubTask{" +
+                "epicTaskID=" + epicTaskID +
+                ", name='" + name + '\'' +
+                ", description='" + description + '\'' +
+                ", id=" + id +
+                ", taskStatus=" + taskStatus +
+                '}';
     }
 }
