@@ -45,18 +45,35 @@ public class InMemoryTaskManager implements TaskManager {
     //Удаление всех задач.
     @Override
     public void clearTasks() {
+        for (Integer id : tasks.keySet()) { //Удаляем все задачи из истории
+            historyManager.remove(id);
+        }
+
         tasks.clear();
     }
 
     @Override
     public void clearEpicTasks() {
+        for (Integer id : epics.keySet()) { //Удаляем все эпики из истории
+            historyManager.remove(id);
+        }
+
+        for (Integer id : subtasks.keySet()) { //Удаляем все сабтаски из истории
+            historyManager.remove(id);
+        }
+
         epics.clear();
         subtasks.clear();
     }
 
     @Override
     public void clearSubTasks() {
+        for (Integer id : subtasks.keySet()) { //Удаляем все сабтаски из истории
+            historyManager.remove(id);
+        }
+
         subtasks.clear();
+
         //Поскольку сабТаски привязаны к Эпикам, то нужно почистить еще их у Эпиков
         for (Integer id : epics.keySet()) {
             epics.get(id).clearSubTaskArrayList();
@@ -148,14 +165,23 @@ public class InMemoryTaskManager implements TaskManager {
     @Override
     public void deleteTaskById(Integer id) {
         tasks.remove(id);
+        historyManager.remove(id);
     }
     public void deleteEpicTaskById(Integer id) {
-        for (Integer subId : subtasks.keySet()) {
+        ArrayList<Integer> idDeletedSubTasks = new ArrayList<>();
+        for (Integer subId : subtasks.keySet()) { //Собираем айдишники тех сабтасков, которые надо удалить
             if (subtasks.get(subId).getEpicTaskID().equals(id)) {
-                subtasks.remove(subId);
+                idDeletedSubTasks.add(subId);
             }
         }
+
+        for (Integer idSubTask : idDeletedSubTasks) { //удаляем сабтаски
+            subtasks.remove(idSubTask);
+            historyManager.remove(idSubTask);
+        }
+
         epics.remove(id);
+        historyManager.remove(id);
     }
 
     @Override
@@ -167,6 +193,7 @@ public class InMemoryTaskManager implements TaskManager {
             subtasks.remove(id);
             updateEpicTaskStatus(epicTask); // Проверяем не надо ли перевести статус эпика на NEW
         }
+        historyManager.remove(id);
     }
 
     //Получение списка всех подзадач определённого эпика.
