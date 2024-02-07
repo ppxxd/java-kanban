@@ -15,6 +15,14 @@ public class Task {
         this.taskStatus = TaskStatus.NEW;
     }
 
+    // Перегрузил конструкторы, чтобы было удобно создавать объекты в файловом менеджере
+    public Task(Integer id, String name, TaskStatus taskStatus, String description) {
+        this.name = name;
+        this.description = description;
+        this.id = id;
+        this.taskStatus = taskStatus;
+    }
+
     public void setName(String name) {
         this.name = name;
     }

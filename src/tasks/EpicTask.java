@@ -12,6 +12,12 @@ public class EpicTask extends Task {
         taskStatus = TaskStatus.NEW;
     }
 
+    // Перегрузил конструкторы, чтобы было удобно создавать объекты в файловом менеджере
+    public EpicTask(Integer id, String name, TaskStatus taskStatus, String description) {
+        super(id, name, taskStatus, description);
+        subTasksIDs = new ArrayList<>();
+    }
+
     public ArrayList<Integer> getSubTaskArrayList() {
         return subTasksIDs;
     }

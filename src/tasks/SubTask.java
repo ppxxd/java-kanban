@@ -11,6 +11,12 @@ public class SubTask extends Task {
         this.taskStatus = TaskStatus.NEW;
     }
 
+    // Перегрузил конструкторы, чтобы было удобно создавать объекты в файловом менеджере
+    public SubTask(Integer id, String name, TaskStatus taskStatus, String description, Integer epicTaskID) {
+        super(id, name, taskStatus, description);
+        this.epicTaskID = epicTaskID;
+    }
+
     public Integer getEpicTaskID() {
         return epicTaskID;
     }
