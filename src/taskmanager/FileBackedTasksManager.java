@@ -96,6 +96,99 @@ public class FileBackedTasksManager extends InMemoryTaskManager {
         return history;
     }
 
+    @Override
+    public void clearTasks() {
+        super.clearTasks();
+        save();
+    }
 
+    @Override
+    public void clearEpicTasks() {
+        super.clearEpicTasks();
+        save();
+    }
 
+    @Override
+    public void clearSubTasks() {
+        super.clearSubTasks();
+        save();
+    }
+
+    @Override
+    public Task getTaskById(Integer id) {
+        Task task = super.getTaskById(id);
+        save();
+        return task;
+    }
+
+    @Override
+    public EpicTask getEpicTaskById(Integer id) {
+        EpicTask epicTask = super.getEpicTaskById(id);
+        save();
+        return epicTask;
+    }
+
+    @Override
+    public SubTask getSubTaskById(Integer id) {
+        SubTask subTask = super.getSubTaskById(id);
+        save();
+        return subTask;
+    }
+
+    @Override
+    public Task createTask(Task task) {
+        super.createTask(task);
+        save();
+        return task;
+    }
+
+    @Override
+    public EpicTask createEpicTask(EpicTask epicTask) {
+        super.createEpicTask(epicTask);
+        save();
+        return epicTask;
+    }
+
+    @Override
+    public SubTask createSubTask(SubTask subTask) {
+        super.createSubTask(subTask);
+        save();
+        return subTask;
+    }
+
+    @Override
+    public void updateTask(Task task) {
+        super.updateTask(task);
+        save();
+    }
+
+    @Override
+    public void updateEpicTask(EpicTask epicTask) {
+        super.updateEpicTask(epicTask);
+        save();
+    }
+
+    @Override
+    public void updateSubTask(SubTask subTask) {
+        super.updateSubTask(subTask);
+        save();
+    }
+
+    @Override
+    public void deleteTaskById(Integer id) {
+        super.deleteTaskById(id);
+        save();
+    }
+
+    @Override
+    public void deleteEpicTaskById(Integer id) {
+        super.deleteEpicTaskById(id);
+        save();
+    }
+
+    @Override
+    public void deleteSubTaskById(Integer id) {
+        super.deleteSubTaskById(id);
+        save();
+    }
 }

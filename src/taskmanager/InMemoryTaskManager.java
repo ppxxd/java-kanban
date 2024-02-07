@@ -167,6 +167,7 @@ public class InMemoryTaskManager implements TaskManager {
         tasks.remove(id);
         historyManager.remove(id);
     }
+    @Override
     public void deleteEpicTaskById(Integer id) {
         ArrayList<Integer> idDeletedSubTasks = new ArrayList<>();
         for (Integer subId : subtasks.keySet()) { //Собираем айдишники тех сабтасков, которые надо удалить
