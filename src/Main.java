@@ -1,4 +1,5 @@
 import taskmanager.*;
+import taskmanager.interfaces.TaskManager;
 import tasks.*;
 
 public class Main {

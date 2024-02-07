@@ -1,4 +1,4 @@
-package taskmanager;
+package taskmanager.interfaces;
 
 import tasks.Task;
 import java.util.List;

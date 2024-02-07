@@ -1,5 +1,8 @@
-package taskmanager;
+package taskmanager.inmemory;
 
+import taskmanager.Managers;
+import taskmanager.interfaces.HistoryManager;
+import taskmanager.interfaces.TaskManager;
 import tasks.*;
 import java.util.ArrayList;
 import java.util.HashMap;

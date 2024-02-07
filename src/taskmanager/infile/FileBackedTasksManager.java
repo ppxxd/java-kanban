@@ -1,5 +1,7 @@
-package taskmanager;
+package taskmanager.infile;
 
+import taskmanager.inmemory.InMemoryTaskManager;
+import taskmanager.interfaces.HistoryManager;
 import tasks.EpicTask;
 import tasks.SubTask;
 import tasks.Task;
