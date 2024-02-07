@@ -8,12 +8,12 @@ public class SubTask extends Task {
     public SubTask(String name, String description, Integer epicTaskID) {
         super(name, description);
         this.epicTaskID = epicTaskID;
-        this.taskStatus = TaskStatus.NEW;
+        this.taskType = TasksTypes.SUBTASK;
     }
 
     // Перегрузил конструкторы, чтобы было удобно создавать объекты в файловом менеджере
-    public SubTask(Integer id, String name, TaskStatus taskStatus, String description, Integer epicTaskID) {
-        super(id, name, taskStatus, description);
+    public SubTask(Integer id, TasksTypes taskType, String name, TaskStatus taskStatus, String description, Integer epicTaskID) {
+        super(id, taskType, name, taskStatus, description);
         this.epicTaskID = epicTaskID;
     }
 

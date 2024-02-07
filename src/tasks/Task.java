@@ -7,6 +7,7 @@ public class Task {
     protected String description;
     protected Integer id; // NULL by default
     protected TaskStatus taskStatus;
+    protected TasksTypes taskType = TasksTypes.TASK; //for FileBackEndManager better logic;
 
     public Task(String name, String description) {
         this.name = name;
@@ -16,8 +17,9 @@ public class Task {
     }
 
     // Перегрузил конструкторы, чтобы было удобно создавать объекты в файловом менеджере
-    public Task(Integer id, String name, TaskStatus taskStatus, String description) {
+    public Task(Integer id, TasksTypes taskType, String name, TaskStatus taskStatus, String description) {
         this.name = name;
+        this.taskType = taskType;
         this.description = description;
         this.id = id;
         this.taskStatus = taskStatus;
@@ -53,6 +55,10 @@ public class Task {
 
     public TaskStatus getTaskStatus() {
         return taskStatus;
+    }
+
+    public TasksTypes getTaskType() {
+        return taskType;
     }
 
     @Override

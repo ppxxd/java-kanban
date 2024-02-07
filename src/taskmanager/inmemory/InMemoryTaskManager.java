@@ -16,7 +16,7 @@ public class InMemoryTaskManager implements TaskManager {
     private final HashMap<Integer, SubTask> subtasks;
     private final HistoryManager historyManager = Managers.getDefaultHistory();
 
-    private static Integer id = 0;
+    private Integer id = 0;
 
     public InMemoryTaskManager() {
         tasks = new HashMap<>();
@@ -128,7 +128,7 @@ public class InMemoryTaskManager implements TaskManager {
             EpicTask epicTask = epics.get(subTask.getEpicTaskID()); //Узнаем к какому эпику она привязана
             epicTask.addSubTaskToArrayList(subTask.getId()); //Добавляем к этому эпику ее айди в список
         } else {
-            System.out.println("No SubTask's epic found with this ID.");
+            System.out.printf("%s%s%s%s%s", "No SubTask's epic found with this ID: subID ", subTask.getId(), " epicID ", epics.get(subTask.getEpicTaskID()), "\n");
         }
         return subTask;
     }
@@ -252,5 +252,22 @@ public class InMemoryTaskManager implements TaskManager {
     @Override
     public List<Task> getHistory() {
         return historyManager.getHistory();
+    }
+
+    public HistoryManager getHistoryManager() {
+        return historyManager;
+    }
+
+    public TasksTypes findTaskTypeByID(Integer id) {
+        if (tasks.containsKey(id)){
+            return TasksTypes.TASK;
+        }
+        if (epics.containsKey(id)){
+            return TasksTypes.EPICTASK;
+        }
+        if (subtasks.containsKey(id)){
+            return TasksTypes.SUBTASK;
+        }
+        return null;
     }
 }
