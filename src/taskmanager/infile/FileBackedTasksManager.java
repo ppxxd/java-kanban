@@ -2,7 +2,6 @@ package taskmanager.infile;
 
 import exceptions.ManagerSaveException;
 import taskmanager.inmemory.InMemoryTaskManager;
-import taskmanager.interfaces.HistoryManager;
 import taskmanager.interfaces.TaskManager;
 import tasks.*;
 
@@ -14,6 +13,7 @@ import java.util.List;
 
 public class FileBackedTasksManager extends InMemoryTaskManager implements TaskManager {
     File file;
+    static ObjectsStringConverter converter = new ObjectsStringConverter();
 
     public static void main(String[] args) {
         File fileForExample = new File("src/files/testing1.csv");
@@ -51,8 +51,9 @@ public class FileBackedTasksManager extends InMemoryTaskManager implements TaskM
 
             String[] lines = fileLine.split("\n");
             int k = 1; //lines[0] = id,type,name,status,description,epic;
+
             while (!lines[k].isEmpty() && !lines[k].isBlank()) { //stop at blank and empty line before history
-                Task task = fileBackedTasksManager.fromString(lines[k++]);
+                Task task = converter.fromString(lines[k++]);
 
                 if (task == null) {
                     return fileBackedTasksManager;
@@ -67,7 +68,7 @@ public class FileBackedTasksManager extends InMemoryTaskManager implements TaskM
                 }
             }
 
-            List<Integer> history = historyFromString(lines[lines.length - 1]);
+            List<Integer> history = ObjectsStringConverter.historyFromString(lines[lines.length - 1]);
             for (Integer id : history) {
                 TasksTypes type = fileBackedTasksManager.findTaskTypeByID(id);
                 switch (type) {
@@ -99,89 +100,19 @@ public class FileBackedTasksManager extends InMemoryTaskManager implements TaskM
             ArrayList<SubTask> subTasks = super.getSubTasksList();
 
             for (Task task : tasks) {
-                fileWriter.write(toString(task));
+                fileWriter.write(converter.toString(task));
             }
             for (EpicTask epic : epicTasks) {
-                fileWriter.write(toString(epic));
+                fileWriter.write(converter.toString(epic));
             }
             for (SubTask sub : subTasks) {
-                fileWriter.write(toString(sub));
+                fileWriter.write(converter.toString(sub));
             }
 
-            fileWriter.write("\n" + historyToString(super.getHistoryManager()));
+            fileWriter.write("\n" + ObjectsStringConverter.historyToString(super.getHistoryManager()));
         } catch (IOException e) {
             throw new ManagerSaveException(e.getMessage());
         }
-    }
-
-    //Task to String
-    private String toString(Task task) {
-        String epicIdIfSubTask = "";
-
-        if (task instanceof SubTask) {
-            epicIdIfSubTask = ((SubTask) task).getEpicTaskID().toString();
-        }
-
-//        String[] taskStrings = {task.getId().toString(), task.getClass().toString(), task.getName(),
-//                task.getTaskStatus().toString(), task.getDescription(), epicIdIfSubTask};
-//        return String.join(",", taskStrings);
-
-        return String.format(
-                "%s,%s,%s,%s,%s,%s\n",
-                task.getId(),
-                task.getTaskType(),
-                task.getName(),
-                task.getTaskStatus(),
-                task.getDescription(),
-                epicIdIfSubTask);
-    }
-
-    private Task fromString(String value) {
-        String[] line = value.split(","); //id,type,name,status,description,epic
-
-        Integer id = Integer.parseInt(line[0]);
-        TasksTypes taskType = TasksTypes.valueOf(line[1]);
-        String name = line[2];
-        TaskStatus taskStatus = TaskStatus.valueOf(line[3]);
-        String description = line[4];
-        Integer epicIdIfSubTask = line.length == 6 ? Integer.parseInt(line[5]) : null;
-
-        switch (taskType) {
-            case TASK:
-                return new Task(id, taskType, name, taskStatus, description);
-            case EPICTASK:
-                return new EpicTask(id, taskType, name, taskStatus, description);
-            case SUBTASK:
-                return new SubTask(id, taskType, name, taskStatus, description, epicIdIfSubTask);
-            default:
-                return null;
-        }
-    }
-
-    private static String historyToString(HistoryManager manager) {
-        StringBuilder line = new StringBuilder();
-        if (!manager.getHistory().isEmpty()) {
-            for (Task task : manager.getHistory()) {
-                line.append(task.getId()).append(",");
-            }
-            line.deleteCharAt(line.length() - 1);
-        }
-        return line.toString();
-    }
-
-    private static List<Integer> historyFromString(String value) {
-        List<Integer> history = new ArrayList<>();
-
-        if (value.isEmpty() || value.isBlank()) {
-            return history;
-        }
-
-        String[] line = value.split(",");
-
-        for (String id : line) {
-            history.add(Integer.parseInt(id));
-        }
-        return history;
     }
 
     @Override
