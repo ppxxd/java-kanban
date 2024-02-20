@@ -1,5 +1,6 @@
 package tasks;
 
+import java.time.Instant;
 import java.util.Objects;
 
 public class SubTask extends Task {
@@ -12,8 +13,9 @@ public class SubTask extends Task {
     }
 
     // Перегрузил конструкторы, чтобы было удобно создавать объекты в файловом менеджере
-    public SubTask(Integer id, TasksTypes taskType, String name, TaskStatus taskStatus, String description, Integer epicTaskID) {
-        super(id, taskType, name, taskStatus, description);
+    public SubTask(Integer id, TasksTypes taskType, String name, TaskStatus taskStatus, String description,
+                   Integer epicTaskID, Instant startTime, long duration) {
+        super(id, taskType, name, taskStatus, description, startTime, duration);
         this.epicTaskID = epicTaskID;
     }
 

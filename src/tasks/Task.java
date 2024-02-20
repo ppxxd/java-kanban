@@ -1,5 +1,6 @@
 package tasks;
 
+import java.time.Instant;
 import java.util.Objects;
 
 public class Task {
@@ -8,6 +9,8 @@ public class Task {
     protected Integer id; // NULL by default
     protected TaskStatus taskStatus;
     protected TasksTypes taskType = TasksTypes.TASK; //for FileBackEndManager better logic;
+    private Instant startTime;
+    private long duration;
 
     public Task(String name, String description) {
         this.name = name;
@@ -17,12 +20,15 @@ public class Task {
     }
 
     // Перегрузил конструкторы, чтобы было удобно создавать объекты в файловом менеджере
-    public Task(Integer id, TasksTypes taskType, String name, TaskStatus taskStatus, String description) {
+    public Task(Integer id, TasksTypes taskType, String name, TaskStatus taskStatus, String description,
+                Instant startTime, long duration) {
         this.name = name;
         this.taskType = taskType;
         this.description = description;
         this.id = id;
         this.taskStatus = taskStatus;
+        this.startTime = startTime;
+        this.duration = duration;
     }
 
     public void setName(String name) {
@@ -59,6 +65,27 @@ public class Task {
 
     public TasksTypes getTaskType() {
         return taskType;
+    }
+
+    public Instant getStartTime() {
+        return startTime;
+    }
+
+    public void setStartTime(Instant startTime) {
+        this.startTime = startTime;
+    }
+
+    public long getDuration() {
+        return duration;
+    }
+
+    public void setDuration(long duration) {
+        this.duration = duration;
+    }
+
+    public Instant getEndTime() {
+        long SECONDS_IN_MINUTE = 60L;
+        return startTime.plusSeconds(duration * SECONDS_IN_MINUTE);
     }
 
     @Override

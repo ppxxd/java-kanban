@@ -3,6 +3,7 @@ package taskmanager.infile;
 import taskmanager.interfaces.HistoryManager;
 import tasks.*;
 
+import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -17,32 +18,37 @@ public class ObjectsStringConverter {
         }
 
         return String.format(
-                "%s,%s,%s,%s,%s,%s\n",
+                "%s,%s,%s,%s,%s,%s,%s,%s\n",
                 task.getId(),
                 task.getTaskType(),
                 task.getName(),
                 task.getTaskStatus(),
                 task.getDescription(),
+                task.getStartTime(),
+                task.getDuration(),
                 epicIdIfSubTask);
     }
 
     public Task fromString(String value) {
-        String[] line = value.split(","); //id,type,name,status,description,epic
+        String[] line = value.split(","); //id,type,name,status,description,startTime,duration,epic
 
         Integer id = Integer.parseInt(line[0]);
         TasksTypes taskType = TasksTypes.valueOf(line[1]);
         String name = line[2];
         TaskStatus taskStatus = TaskStatus.valueOf(line[3]);
         String description = line[4];
-        Integer epicIdIfSubTask = line.length == 6 ? Integer.parseInt(line[5]) : null;
+        Instant startTime = Instant.parse(line[5]);
+        Long duration = Long.parseLong(line[6]);
+        Integer epicIdIfSubTask = line.length == 8 ? Integer.parseInt(line[7]) : null;
+
 
         switch (taskType) {
             case TASK:
-                return new Task(id, taskType, name, taskStatus, description);
+                return new Task(id, taskType, name, taskStatus, description, startTime, duration);
             case EPICTASK:
-                return new EpicTask(id, taskType, name, taskStatus, description);
+                return new EpicTask(id, taskType, name, taskStatus, description, startTime, duration);
             case SUBTASK:
-                return new SubTask(id, taskType, name, taskStatus, description, epicIdIfSubTask);
+                return new SubTask(id, taskType, name, taskStatus, description, epicIdIfSubTask, startTime, duration);
             default:
                 return null;
         }

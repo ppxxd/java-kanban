@@ -1,10 +1,12 @@
 package tasks;
 
+import java.time.Instant;
 import java.util.ArrayList;
 import java.util.Objects;
 
 public class EpicTask extends Task {
     private final ArrayList<Integer> subTasksIDs;
+    private Instant endTime;
 
     public EpicTask(String name, String description) {
         super(name, description);
@@ -14,8 +16,10 @@ public class EpicTask extends Task {
     }
 
     // Перегрузил конструкторы, чтобы было удобно создавать объекты в файловом менеджере
-    public EpicTask(Integer id, TasksTypes taskType, String name, TaskStatus taskStatus, String description) {
-        super(id, taskType, name, taskStatus, description);
+    public EpicTask(Integer id, TasksTypes taskType, String name, TaskStatus taskStatus, String description,
+                    Instant startTime, long duration) {
+        super(id, taskType, name, taskStatus, description, startTime, duration);
+        this.endTime = super.getEndTime();
         subTasksIDs = new ArrayList<>();
     }
 
@@ -38,6 +42,11 @@ public class EpicTask extends Task {
     public SubTask createSubTask(String name, String description) {
         //Добавляем айди сабТаски после определения ей её айди в Менеджере (метод createSubTask)
         return new SubTask(name, description, id);
+    }
+
+    @Override
+    public Instant getEndTime() {
+        return endTime;
     }
 
     @Override
