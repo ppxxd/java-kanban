@@ -1,12 +1,15 @@
 package taskmanager.inmemory;
 
+import exceptions.ManagerValidateException;
 import taskmanager.Managers;
 import taskmanager.interfaces.HistoryManager;
 import taskmanager.interfaces.TaskManager;
 import tasks.*;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
+
+import java.time.Instant;
+import java.time.Period;
+import java.util.*;
+import java.util.stream.Collectors;
 
 import tasks.TaskStatus;
 
@@ -15,6 +18,8 @@ public class InMemoryTaskManager implements TaskManager {
     private final HashMap<Integer, EpicTask> epics;
     private final HashMap<Integer, SubTask> subtasks;
     private final HistoryManager historyManager = Managers.getDefaultHistory();
+    private final Comparator<Task> taskComparator = Comparator.comparing(Task::getStartTime);
+    Set<Task> prioritizedTasks = new TreeSet<>(taskComparator);
 
     private Integer id = 0;
 
@@ -110,6 +115,7 @@ public class InMemoryTaskManager implements TaskManager {
     public Task createTask(Task task) {
         task.setId(generateId());
         tasks.put(task.getId(), task);
+        addNewPrioritizedTask(task);
         return task;
     }
 
@@ -270,4 +276,59 @@ public class InMemoryTaskManager implements TaskManager {
         }
         return null;
     }
+
+    public List<Task> getPrioritizedTasks() {
+        return new ArrayList<>(prioritizedTasks);
+    }
+
+    private void addNewPrioritizedTask(Task task) {
+        prioritizedTasks.add(task);
+        validateTaskPriority();
+    }
+
+    private void validateTaskPriority() {
+        List<Task> tasks = getPrioritizedTasks();
+
+        for (int i = 1; i < tasks.size(); i++) {
+            Task task = tasks.get(i);
+
+            boolean taskHasIntersections = checkTime(task);
+
+            if (taskHasIntersections) {
+                throw new ManagerValidateException(
+                        "Задачи №" + task.getId() + " и №" + tasks.get(i - 1).getId() + "пересекаются.");
+            }
+        }
+    }
+
+    private boolean checkTime(Task task) {
+        List<Task> tasks = getPrioritizedTasks();
+        Instant taskStartTime = task.getStartTime();
+        Instant taskEndTime = task.getEndTime();
+
+        //Если задача началась 01.01.2000 в 10:00 и длится 1 час,
+        // то следующая задача может быть лишь после 11:00 утра
+        for (Task taskToCheck : tasks) {
+            if (taskToCheck.getStartTime() != null && taskToCheck.getEndTime() != null) {
+                Instant taskToCheckStartTime = taskToCheck.getStartTime();
+                Instant taskToCheckEndTime = taskToCheck.getEndTime();
+                if (taskToCheckStartTime.isBefore(taskStartTime) && taskToCheckEndTime.isAfter(taskEndTime)) {
+                    //Если начало другой задачи (из цикла) раньше данной, а окончание другой задачи позже данной,
+                    //то есть пересечение, то есть данная задача вставлена во время выполнения другой задачи
+                    return true;
+                } else if (taskToCheckStartTime.isAfter(taskStartTime) && taskToCheckEndTime.isBefore(taskEndTime)) {
+                    //Если начало другой задачи (из цикла) позже данной, а окончание другой задачи раньше окончания
+                    //данной задачи, то есть пересечение, то есть данная задача закончится позже, чем начнется другая
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+
+//    public static void main(String[] args) { //Ручное тестирование работы валидации таймингов
+//        TaskManager inMemoryTaskManager = Managers.getDefault();
+//        inMemoryTaskManager.createTask(new Task(1, TasksTypes.TASK, "test1", TaskStatus.NEW, "test1 description", Instant.now(), 10));
+//        inMemoryTaskManager.createTask(new Task(2, TasksTypes.TASK, "test2", TaskStatus.NEW, "test2 description", Instant.now().minus(Period.ofDays(10)), 1));
+//    }
 }

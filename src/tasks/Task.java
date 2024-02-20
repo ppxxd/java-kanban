@@ -71,16 +71,8 @@ public class Task {
         return startTime;
     }
 
-    public void setStartTime(Instant startTime) {
-        this.startTime = startTime;
-    }
-
     public long getDuration() {
         return duration;
-    }
-
-    public void setDuration(long duration) {
-        this.duration = duration;
     }
 
     public Instant getEndTime() {
@@ -109,6 +101,9 @@ public class Task {
                 ", description='" + description + '\'' +
                 ", id=" + id +
                 ", taskStatus=" + taskStatus +
+                ", taskType=" + taskType +
+                ", startTime=" + startTime +
+                ", duration=" + duration +
                 '}';
     }
 }
