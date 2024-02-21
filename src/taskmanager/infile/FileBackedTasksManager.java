@@ -9,38 +9,39 @@ import java.io.*;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 public class FileBackedTasksManager extends InMemoryTaskManager implements TaskManager {
     File file;
     static ObjectsStringConverter converter = new ObjectsStringConverter();
 
-    public static void main(String[] args) {
-        File fileForExample = new File("src/files/testing1.csv");
-        FileBackedTasksManager fileBackedTasksManager = new FileBackedTasksManager(fileForExample);
-        fileBackedTasksManager.createTask(new Task("test1", "test1 description"));
-        fileBackedTasksManager.createTask(new Task("test2", "test2 description"));
-
-        fileBackedTasksManager.getTaskById(1);
-        fileBackedTasksManager.getTaskById(2);
-
-        fileBackedTasksManager.createEpicTask(new EpicTask("test3", "test3 description"));
-        fileBackedTasksManager.createSubTask(new SubTask("test4", "test4 description", 3));
-        fileBackedTasksManager.createSubTask(new SubTask("test5", "test5 description", 3));
-
-        fileBackedTasksManager.getEpicTaskById(3);
-        fileBackedTasksManager.getSubTaskById(4);
-        fileBackedTasksManager.getTaskById(1);
-
-        FileBackedTasksManager fileBackedTasksManager2 = loadFromFile(fileForExample);
-    }
+//    public static void main(String[] args) {
+//        File fileForExample = new File("src/files/testing1.csv");
+//        FileBackedTasksManager fileBackedTasksManager = new FileBackedTasksManager(fileForExample);
+//        fileBackedTasksManager.createTask(new Task("test1", "test1 description"));
+//        fileBackedTasksManager.createTask(new Task("test2", "test2 description"));
+//
+//        fileBackedTasksManager.getTaskById(1);
+//        fileBackedTasksManager.getTaskById(2);
+//
+//        fileBackedTasksManager.createEpicTask(new EpicTask("test3", "test3 description"));
+//        fileBackedTasksManager.createSubTask(new SubTask("test4", "test4 description", 3));
+//        fileBackedTasksManager.createSubTask(new SubTask("test5", "test5 description", 3));
+//
+//        fileBackedTasksManager.getEpicTaskById(3);
+//        fileBackedTasksManager.getSubTaskById(4);
+//        fileBackedTasksManager.getTaskById(1);
+//
+//        FileBackedTasksManager fileBackedTasksManager2 = loadFromFile(fileForExample);
+//    }
 
     public FileBackedTasksManager(File file) {
         super();
         this.file = file;
     }
 
-    private static FileBackedTasksManager loadFromFile(File file) throws ManagerSaveException {
+    public static FileBackedTasksManager loadFromFile(File file) throws ManagerSaveException {
         FileBackedTasksManager fileBackedTasksManager = new FileBackedTasksManager(file);
         try {
             String fileLine = Files.readString(Path.of(String.valueOf(file)));
@@ -50,9 +51,18 @@ public class FileBackedTasksManager extends InMemoryTaskManager implements TaskM
             }
 
             String[] lines = fileLine.split("\n");
-            int k = 1; //lines[0] = id,type,name,status,description,epic;
 
-            while (!lines[k].isEmpty() && !lines[k].isBlank()) { //stop at blank and empty line before history
+            if (lines.length == 1) {
+                return fileBackedTasksManager;
+            }
+
+            int k = 1; //lines[0] = id,type,name,status,description,epic;
+            String lastLine = null;
+
+
+            while (k < lines.length && !lines[k].isEmpty() && !lines[k].isBlank()) {
+                //stop at blank and empty line before history
+                lastLine = lines[k];
                 Task task = converter.fromString(lines[k++]);
 
                 if (task == null) {
@@ -67,7 +77,9 @@ public class FileBackedTasksManager extends InMemoryTaskManager implements TaskM
                     fileBackedTasksManager.createSubTask((SubTask) task);
                 }
             }
-
+            if (lines[lines.length - 1].equals(lastLine)) {
+                return fileBackedTasksManager;
+            }
             List<Integer> history = ObjectsStringConverter.historyFromString(lines[lines.length - 1]);
             for (Integer id : history) {
                 TasksTypes type = fileBackedTasksManager.findTaskTypeByID(id);
@@ -91,7 +103,7 @@ public class FileBackedTasksManager extends InMemoryTaskManager implements TaskM
         }
     }
 
-    private void save() throws ManagerSaveException {
+    public void save() throws ManagerSaveException {
         try (FileWriter fileWriter = new FileWriter(this.file)) {
             fileWriter.write("id,type,name,status,description,epic\n");
 

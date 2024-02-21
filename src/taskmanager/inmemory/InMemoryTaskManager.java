@@ -18,7 +18,8 @@ public class InMemoryTaskManager implements TaskManager {
     private final HashMap<Integer, EpicTask> epics;
     private final HashMap<Integer, SubTask> subtasks;
     private final HistoryManager historyManager = Managers.getDefaultHistory();
-    private final Comparator<Task> taskComparator = Comparator.comparing(Task::getStartTime);
+    private final TasksComparator taskComparator = new TasksComparator();
+    //private final Comparator<Task> taskComparator = Comparator.nullsLast(Comparator.comparing(Task::getStartTime));
     Set<Task> prioritizedTasks = new TreeSet<>(taskComparator);
 
     private Integer id = 0;

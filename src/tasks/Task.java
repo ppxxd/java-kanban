@@ -10,13 +10,15 @@ public class Task {
     protected TaskStatus taskStatus;
     protected TasksTypes taskType = TasksTypes.TASK; //for FileBackEndManager better logic;
     private Instant startTime;
-    private long duration;
+    private Long duration;
 
     public Task(String name, String description) {
         this.name = name;
         this.description = description;
         this.id = null;
         this.taskStatus = TaskStatus.NEW;
+        this.startTime = null;
+        this.duration = 0L;
     }
 
     // Перегрузил конструкторы, чтобы было удобно создавать объекты в файловом менеджере
@@ -76,6 +78,7 @@ public class Task {
     }
 
     public Instant getEndTime() {
+        if (startTime == null) {return null;}
         long SECONDS_IN_MINUTE = 60L;
         return startTime.plusSeconds(duration * SECONDS_IN_MINUTE);
     }
