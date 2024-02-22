@@ -10,7 +10,7 @@ import java.util.List;
 public class ObjectsStringConverter {
 
     //Task to String
-    public String toString(Task task) {
+    public static String toString(Task task) {
         String epicIdIfSubTask = "";
 
         if (task.getTaskType() == TasksTypes.SUBTASK) {
@@ -29,7 +29,7 @@ public class ObjectsStringConverter {
                 epicIdIfSubTask);
     }
 
-    public Task fromString(String value) {
+    public static Task fromString(String value) {
         String[] line = value.split(","); //id,type,name,status,description,startTime,duration,epic
 
         Integer id = Integer.parseInt(line[0]);

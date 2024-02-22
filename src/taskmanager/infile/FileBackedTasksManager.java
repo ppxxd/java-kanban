@@ -12,36 +12,16 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-public class FileBackedTasksManager extends InMemoryTaskManager implements TaskManager {
+public class FileBackedTasksManager extends InMemoryTaskManager {
     File file;
     static ObjectsStringConverter converter = new ObjectsStringConverter();
-
-//    public static void main(String[] args) {
-//        File fileForExample = new File("src/files/testing1.csv");
-//        FileBackedTasksManager fileBackedTasksManager = new FileBackedTasksManager(fileForExample);
-//        fileBackedTasksManager.createTask(new Task("test1", "test1 description"));
-//        fileBackedTasksManager.createTask(new Task("test2", "test2 description"));
-//
-//        fileBackedTasksManager.getTaskById(1);
-//        fileBackedTasksManager.getTaskById(2);
-//
-//        fileBackedTasksManager.createEpicTask(new EpicTask("test3", "test3 description"));
-//        fileBackedTasksManager.createSubTask(new SubTask("test4", "test4 description", 3));
-//        fileBackedTasksManager.createSubTask(new SubTask("test5", "test5 description", 3));
-//
-//        fileBackedTasksManager.getEpicTaskById(3);
-//        fileBackedTasksManager.getSubTaskById(4);
-//        fileBackedTasksManager.getTaskById(1);
-//
-//        FileBackedTasksManager fileBackedTasksManager2 = loadFromFile(fileForExample);
-//    }
 
     public FileBackedTasksManager(File file) {
         super();
         this.file = file;
     }
 
-    public static FileBackedTasksManager loadFromFile(File file) throws ManagerSaveException {
+    public static FileBackedTasksManager loadFromFile(File file) {
         FileBackedTasksManager fileBackedTasksManager = new FileBackedTasksManager(file);
         try {
             String fileLine = Files.readString(Path.of(String.valueOf(file)));

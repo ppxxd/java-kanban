@@ -45,6 +45,7 @@ public class SubTask extends Task {
                 ", description='" + description + '\'' +
                 ", id=" + id +
                 ", taskStatus=" + taskStatus +
+                ", taskType=" + taskType +
                 '}';
     }
 }

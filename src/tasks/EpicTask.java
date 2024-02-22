@@ -55,22 +55,24 @@ public class EpicTask extends Task {
         if (o == null || getClass() != o.getClass()) return false;
         if (!super.equals(o)) return false;
         EpicTask epicTask = (EpicTask) o;
-        return Objects.equals(subTasksIDs, epicTask.subTasksIDs);
+        return Objects.equals(subTasksIDs, epicTask.subTasksIDs) && Objects.equals(endTime, epicTask.endTime);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(super.hashCode(), subTasksIDs);
+        return Objects.hash(super.hashCode(), subTasksIDs, endTime);
     }
 
     @Override
     public String toString() {
         return "EpicTask{" +
                 "subTasksIDs=" + subTasksIDs +
+                ", endTime=" + endTime +
                 ", name='" + name + '\'' +
                 ", description='" + description + '\'' +
                 ", id=" + id +
                 ", taskStatus=" + taskStatus +
+                ", taskType=" + taskType +
                 '}';
     }
 }

@@ -326,10 +326,4 @@ public class InMemoryTaskManager implements TaskManager {
         }
         return false;
     }
-
-//    public static void main(String[] args) { //Ручное тестирование работы валидации таймингов
-//        TaskManager inMemoryTaskManager = Managers.getDefault();
-//        inMemoryTaskManager.createTask(new Task(1, TasksTypes.TASK, "test1", TaskStatus.NEW, "test1 description", Instant.now(), 10));
-//        inMemoryTaskManager.createTask(new Task(2, TasksTypes.TASK, "test2", TaskStatus.NEW, "test2 description", Instant.now().minus(Period.ofDays(10)), 1));
-//    }
 }
