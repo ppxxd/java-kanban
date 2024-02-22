@@ -14,7 +14,6 @@ import java.util.List;
 
 public class FileBackedTasksManager extends InMemoryTaskManager {
     File file;
-    static ObjectsStringConverter converter = new ObjectsStringConverter();
 
     public FileBackedTasksManager(File file) {
         super();
@@ -43,7 +42,7 @@ public class FileBackedTasksManager extends InMemoryTaskManager {
             while (k < lines.length && !lines[k].isEmpty() && !lines[k].isBlank()) {
                 //stop at blank and empty line before history
                 lastLine = lines[k];
-                Task task = converter.fromString(lines[k++]);
+                Task task = ObjectsStringConverter.fromString(lines[k++]);
 
                 if (task == null) {
                     return fileBackedTasksManager;
@@ -92,13 +91,13 @@ public class FileBackedTasksManager extends InMemoryTaskManager {
             ArrayList<SubTask> subTasks = super.getSubTasksList();
 
             for (Task task : tasks) {
-                fileWriter.write(converter.toString(task));
+                fileWriter.write(ObjectsStringConverter.toString(task));
             }
             for (EpicTask epic : epicTasks) {
-                fileWriter.write(converter.toString(epic));
+                fileWriter.write(ObjectsStringConverter.toString(epic));
             }
             for (SubTask sub : subTasks) {
-                fileWriter.write(converter.toString(sub));
+                fileWriter.write(ObjectsStringConverter.toString(sub));
             }
 
             fileWriter.write("\n" + ObjectsStringConverter.historyToString(super.getHistoryManager()));
