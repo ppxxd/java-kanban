@@ -9,8 +9,6 @@ import tasks.*;
 import java.time.Instant;
 import java.util.*;
 
-import tasks.TaskStatus;
-
 public class InMemoryTaskManager implements TaskManager {
     protected final HashMap<Integer, Task> tasks;
     protected final HashMap<Integer, EpicTask> epics;

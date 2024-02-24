@@ -1,12 +1,12 @@
 package http;
 
-import taskmanager.inmemory.InMemoryTaskManager;
-import tasks.*;
-import taskmanager.interfaces.*;
-import taskmanager.Managers;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import taskmanager.Managers;
+import taskmanager.inmemory.InMemoryTaskManager;
+import taskmanager.interfaces.TaskManager;
+import tasks.*;
 
 import java.io.IOException;
 import java.time.Instant;

@@ -1,14 +1,17 @@
 package http;
 
-import com.google.gson.*;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.google.gson.JsonArray;
+import com.google.gson.JsonParser;
 import com.google.gson.reflect.TypeToken;
 import http.adapters.InstantAdapter;
-import taskmanager.inmemory.InMemoryTaskManager;
-import tasks.*;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import taskmanager.inmemory.InMemoryTaskManager;
+import tasks.*;
 
 import java.io.IOException;
 import java.net.URI;

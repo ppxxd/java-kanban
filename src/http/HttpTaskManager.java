@@ -3,13 +3,13 @@ package http;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
+import exceptions.HttpTaskManagerLoadException;
 import http.adapters.InstantAdapter;
 import taskmanager.infile.FileBackedTasksManager;
 import tasks.EpicTask;
 import tasks.SubTask;
 import tasks.Task;
 
-import java.io.File;
 import java.io.IOException;
 import java.lang.reflect.Type;
 import java.time.Instant;
@@ -22,13 +22,14 @@ public class HttpTaskManager extends FileBackedTasksManager {
     private static KVTaskClient client;
     private static final Gson gson = new GsonBuilder().serializeNulls().
             registerTypeAdapter(Instant.class, new InstantAdapter()).create();
-    public HttpTaskManager(String url) throws InterruptedException, IOException {
+
+    public HttpTaskManager(String url) throws IOException, InterruptedException {
         HttpTaskManager.url = url;
         client = new KVTaskClient(url);
     }
 
     @Override
-    public void save() {
+    public void save() throws HttpTaskManagerLoadException {
         var tasks = gson.toJson(getTasksList());
         client.put("/tasks/task", tasks);
 
@@ -44,8 +45,13 @@ public class HttpTaskManager extends FileBackedTasksManager {
         var priorTasks = gson.toJson(getPrioritizedTasks());
         client.put("/tasks", priorTasks);
     }
-    public static HttpTaskManager load() throws IOException, InterruptedException {
-        HttpTaskManager httpTaskManager = new HttpTaskManager(url);
+    public static HttpTaskManager load() throws HttpTaskManagerLoadException {
+        HttpTaskManager httpTaskManager = null;
+        try {
+            httpTaskManager = new HttpTaskManager(url);
+        } catch (IOException | InterruptedException e) {
+            throw new HttpTaskManagerLoadException(e.getMessage());
+        }
         var loadTasks = client.load("/tasks/task");
         Type taskType = new TypeToken<ArrayList<Task>>() {}.getType();
         List<Task> tasksList = gson.fromJson(loadTasks, taskType);

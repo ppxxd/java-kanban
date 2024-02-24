@@ -1,5 +1,8 @@
 package http;
 
+import exceptions.KVTaskClientPutException;
+import exceptions.ManagerSaveException;
+
 import java.io.IOException;
 import java.net.URI;
 import java.net.http.HttpClient;
@@ -12,7 +15,7 @@ public class KVTaskClient {
     private final HttpClient httpClient;
     private final String url;
 
-    public KVTaskClient(String url) throws InterruptedException, IOException {
+    public KVTaskClient(String url) throws IOException, InterruptedException {
         this.url = url;
         URI uri = URI.create(url + "/register");
         HttpRequest request = HttpRequest.newBuilder()
@@ -24,7 +27,7 @@ public class KVTaskClient {
         token = httpClient.send(request, handler).body();
     }
 
-    public void put(String key, String json) {
+    public void put(String key, String json) throws KVTaskClientPutException {
         URI uri = URI.create(this.url + "/save" + key + "?API_TOKEN=" + token);
 
         HttpRequest request = HttpRequest.newBuilder()
@@ -42,11 +45,11 @@ public class KVTaskClient {
                 System.out.println("Не удалось сохранить данные");
             }
         } catch (IOException | InterruptedException e) {
-            System.out.println(e.getMessage());
+            throw new ManagerSaveException(e.getMessage());
         }
     }
 
-    public String load(String key) {
+    public String load(String key) throws KVTaskClientPutException {
         URI uri = URI.create(this.url + "/load" + key + "?API_TOKEN=" + token);
 
         HttpRequest request = HttpRequest.newBuilder()
@@ -60,10 +63,12 @@ public class KVTaskClient {
             HttpResponse<String> response = client.send(request,
                     HttpResponse.BodyHandlers.ofString(StandardCharsets.UTF_8)
             );
+            if (response.statusCode() != 200) {
+                return null;
+            }
             return response.body();
         } catch (IOException | InterruptedException e) {
-            System.out.println(e.getMessage());
-            return "Во время запроса произошла ошибка";
+            throw new ManagerSaveException(e.getMessage());
         }
     }
 }

@@ -1,6 +1,5 @@
 package taskmanagers;
 
-import static org.junit.jupiter.api.Assertions.*;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import taskmanager.interfaces.TaskManager;
@@ -8,6 +7,8 @@ import tasks.*;
 
 import java.time.Instant;
 import java.util.List;
+
+import static org.junit.jupiter.api.Assertions.*;
 
 public abstract class TaskManagerTest<T extends TaskManager> {
     protected T manager;
