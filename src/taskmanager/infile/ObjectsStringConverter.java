@@ -38,7 +38,7 @@ public class ObjectsStringConverter {
         TaskStatus taskStatus = TaskStatus.valueOf(line[3]);
         String description = line[4];
         Instant startTime = line[5].equals("null") ? null : Instant.parse(line[5]);
-        long duration = Long.parseLong(line[6]);;
+        long duration = Long.parseLong(line[6]);
         Integer epicIdIfSubTask = line.length == 8 ? Integer.parseInt(line[7]) : null;
 
 

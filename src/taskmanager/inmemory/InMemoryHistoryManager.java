@@ -71,6 +71,9 @@ public class InMemoryHistoryManager implements HistoryManager {
 
     @Override
     public void add(Task task) {
+        if (task == null) {
+            return;
+        }
         if (customLinkedList.containsKey(task.getId())) {
             removeNode(customLinkedList.get(task.getId()));
             customLinkedList.remove(task.getId());

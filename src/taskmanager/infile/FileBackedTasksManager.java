@@ -2,14 +2,12 @@ package taskmanager.infile;
 
 import exceptions.ManagerSaveException;
 import taskmanager.inmemory.InMemoryTaskManager;
-import taskmanager.interfaces.TaskManager;
 import tasks.*;
 
 import java.io.*;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 public class FileBackedTasksManager extends InMemoryTaskManager {
@@ -19,6 +17,8 @@ public class FileBackedTasksManager extends InMemoryTaskManager {
         super();
         this.file = file;
     }
+
+    protected FileBackedTasksManager() {}
 
     public static FileBackedTasksManager loadFromFile(File file) {
         FileBackedTasksManager fileBackedTasksManager = new FileBackedTasksManager(file);

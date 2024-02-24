@@ -1,4 +1,7 @@
+package taskmanagers;
+
 import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import taskmanager.infile.FileBackedTasksManager;
@@ -12,7 +15,6 @@ import java.nio.file.Path;
 
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class FileBackedTasksManagerTest extends TaskManagerTest<InMemoryTaskManager> {
 
@@ -39,9 +41,9 @@ public class FileBackedTasksManagerTest extends TaskManagerTest<InMemoryTaskMana
         fileManager.save();
         FileBackedTasksManager fil = FileBackedTasksManager.loadFromFile(file);
 
-        assertTrue(manager.getTasksList().isEmpty());
-        assertTrue(manager.getEpicTasksList().isEmpty());
-        assertTrue(manager.getSubTasksList().isEmpty());
+        Assertions.assertTrue(manager.getTasksList().isEmpty());
+        Assertions.assertTrue(manager.getEpicTasksList().isEmpty());
+        Assertions.assertTrue(manager.getSubTasksList().isEmpty());
     }
 
     @Test
@@ -61,7 +63,7 @@ public class FileBackedTasksManagerTest extends TaskManagerTest<InMemoryTaskMana
         FileBackedTasksManager fileManager = new FileBackedTasksManager(file);
         fileManager.save();
         FileBackedTasksManager.loadFromFile(file);
-        assertTrue(manager.getHistory().isEmpty());
+        Assertions.assertTrue(manager.getHistory().isEmpty());
     }
 }
 

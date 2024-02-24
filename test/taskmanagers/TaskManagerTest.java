@@ -1,3 +1,5 @@
+package taskmanagers;
+
 import static org.junit.jupiter.api.Assertions.*;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -226,47 +228,41 @@ public abstract class TaskManagerTest<T extends TaskManager> {
 
     @Test
     void shouldReturnTaskIfTaskFoundById() {
-        //if id given is null -> throws null
-        NullPointerException ex = assertThrows(NullPointerException.class, () -> manager.getTaskById(null));
-        assertNull(ex.getMessage());
+        //if id given is null
+        assertNull(manager.getTaskById(null));
 
         Task task = manager.createTask(createTask()); //id given is correct
         Integer id = task.getId();
         assertEquals(task, manager.getTaskById(id));
 
-        //if id given is incorrect -> throws null
-        NullPointerException exception = assertThrows(NullPointerException.class, () -> manager.getTaskById(12312));
-        assertNull(exception.getMessage());
+        //if id given is incorrect
+        assertNull(manager.getTaskById(12312));
     }
 
     @Test
     void shouldReturnSubTaskIfSubTaskFoundById() {
-        //if id given is null -> throws null
-        NullPointerException ex = assertThrows(NullPointerException.class, () -> manager.getSubTaskById(null));
-        assertNull(ex.getMessage());
+        //if id given is null -> assertnull
+        assertNull(manager.getSubTaskById(null));
 
         SubTask sub = manager.createSubTask(createSub(manager.createEpicTask(createEpic()).getId())); //id given is correct
         Integer id = sub.getId();
         assertEquals(sub, manager.getSubTaskById(id));
 
         //if id given is incorrect -> throws null
-        NullPointerException exception = assertThrows(NullPointerException.class, () -> manager.getSubTaskById(12312));
-        assertNull(exception.getMessage());
+        assertNull(manager.getSubTaskById(12312));
     }
 
     @Test
     void shouldReturnEpicTaskIfEpicTaskFoundById() {
-        //if id given is null -> throws null
-        NullPointerException ex = assertThrows(NullPointerException.class, () -> manager.getEpicTaskById(null));
-        assertNull(ex.getMessage());
+        //if id given is null
+        assertNull(manager.getEpicTaskById(null));
 
         EpicTask epic = manager.createEpicTask(createEpic()); //id given is correct
         Integer id = epic.getId();
         assertEquals(epic, manager.getEpicTaskById(id));
 
-        //if id given is incorrect -> throws null
-        NullPointerException exception = assertThrows(NullPointerException.class, () -> manager.getEpicTaskById(12312));
-        assertNull(exception.getMessage());
+        //if id given is incorrect
+        assertNull(manager.getEpicTaskById(12312));
     }
 
     @Test
@@ -333,8 +329,7 @@ public abstract class TaskManagerTest<T extends TaskManager> {
         manager.deleteTaskById(task.getId());
 
         assertTrue(manager.getTasksList().isEmpty());
-        NullPointerException exception = assertThrows(NullPointerException.class, () -> manager.getTaskById(task.getId()));
-        assertNull(exception.getMessage());
+        assertNull(manager.getTaskById(task.getId()));
     }
 
     @Test
@@ -347,9 +342,7 @@ public abstract class TaskManagerTest<T extends TaskManager> {
         manager.deleteEpicTaskById(epic.getId());
 
         assertTrue(manager.getEpicTasksList().isEmpty());
-        NullPointerException exception = assertThrows(NullPointerException.class, () ->
-                manager.getEpicTaskById(epic.getId()));
-        assertNull(exception.getMessage());
+        assertNull(manager.getEpicTaskById(epic.getId()));
 
         manager.createEpicTask(epic);
         manager.createSubTask(createSub(epic.getId()));
@@ -373,9 +366,7 @@ public abstract class TaskManagerTest<T extends TaskManager> {
         manager.deleteSubTaskById(sub.getId());
 
         assertTrue(manager.getSubTasksList().isEmpty());
-        NullPointerException exception = assertThrows(NullPointerException.class, () ->
-                manager.getSubTaskById(sub.getId()));
-        assertNull(exception.getMessage());
+        assertNull(manager.getSubTaskById(sub.getId()));
 
         assertTrue(manager.getEpicsSubTaskList(epic).isEmpty());
     }

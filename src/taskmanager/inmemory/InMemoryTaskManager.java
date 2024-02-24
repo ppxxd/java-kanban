@@ -7,22 +7,20 @@ import taskmanager.interfaces.TaskManager;
 import tasks.*;
 
 import java.time.Instant;
-import java.time.Period;
 import java.util.*;
-import java.util.stream.Collectors;
 
 import tasks.TaskStatus;
 
 public class InMemoryTaskManager implements TaskManager {
-    private final HashMap<Integer, Task> tasks;
-    private final HashMap<Integer, EpicTask> epics;
-    private final HashMap<Integer, SubTask> subtasks;
-    private final HistoryManager historyManager = Managers.getDefaultHistory();
+    protected final HashMap<Integer, Task> tasks;
+    protected final HashMap<Integer, EpicTask> epics;
+    protected final HashMap<Integer, SubTask> subtasks;
+    protected final HistoryManager historyManager = Managers.getDefaultHistory();
     private final TasksComparator taskComparator = new TasksComparator();
     //private final Comparator<Task> taskComparator = Comparator.nullsLast(Comparator.comparing(Task::getStartTime));
-    Set<Task> prioritizedTasks = new TreeSet<>(taskComparator);
+    protected Set<Task> prioritizedTasks = new TreeSet<>(taskComparator);
 
-    private Integer id = 0;
+    private static Integer id = 0;
 
     public InMemoryTaskManager() {
         tasks = new HashMap<>();
@@ -30,7 +28,7 @@ public class InMemoryTaskManager implements TaskManager {
         subtasks = new HashMap<>();
     }
 
-    private Integer generateId() {
+    public static Integer generateId() {
         id++;
         return id;
     }
@@ -114,7 +112,9 @@ public class InMemoryTaskManager implements TaskManager {
     //Создание. Сам объект должен передаваться в качестве параметра.
     @Override
     public Task createTask(Task task) {
-        task.setId(generateId());
+        if (task.getId() == null) {
+            task.setId(generateId());
+        }
         tasks.put(task.getId(), task);
         addNewPrioritizedTask(task);
         return task;
@@ -122,14 +122,18 @@ public class InMemoryTaskManager implements TaskManager {
 
     @Override
     public EpicTask createEpicTask(EpicTask epicTask) {
-        epicTask.setId(generateId());
+        if (epicTask.getId() == null) {
+            epicTask.setId(generateId());
+        }
         epics.put(epicTask.getId(), epicTask);
         return epicTask;
     }
 
     @Override
     public SubTask createSubTask(SubTask subTask) {
-        subTask.setId(generateId());
+        if (subTask.getId() == null) {
+            subTask.setId(generateId());
+        }
         subtasks.put(subTask.getId(), subTask);
         if (epics.get(subTask.getEpicTaskID()) != null) {
             EpicTask epicTask = epics.get(subTask.getEpicTaskID()); //Узнаем к какому эпику она привязана

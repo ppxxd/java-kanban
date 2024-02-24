@@ -9,8 +9,8 @@ public class Task {
     protected Integer id; // NULL by default
     protected TaskStatus taskStatus;
     protected TasksTypes taskType = TasksTypes.TASK; //for FileBackEndManager better logic;
-    private Instant startTime;
-    private Long duration;
+    protected Instant startTime;
+    protected Long duration;
 
     public Task(String name, String description) {
         this.name = name;
