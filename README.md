@@ -1,2 +1,2 @@
 # java-kanban
-Repository for homework project.
+Проект "Трекер задач" в рамках обучения на Я.Практикум
